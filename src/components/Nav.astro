@@ -28,7 +28,7 @@ import MobileMenu from './MobileMenu.astro';
   .desktop-links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 7px; height: 1px; background: #1d1d1f; transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
   .desktop-links a:hover::after, .desktop-links a:focus-visible::after { transform: scaleX(1); }
   .desktop-links a:hover { color: #1d1d1f; }
-  .nav-cta { justify-self: end; white-space: nowrap; }
+  .nav-cta { justify-self: end; white-space: nowrap; padding: .5rem 1.05rem; min-height: 38px; font-size: .8rem; }
   .menu-button { display: none; justify-self: end; place-items: center; width: 44px; height: 44px; border: 1px solid #e8e8ed; border-radius: 999px; background: transparent; color: #1d1d1f; cursor: pointer; }
   @media (max-width: 767px) { .nav-inner { grid-template-columns: 1fr auto; } .desktop-links, .nav-cta { display: none; } .menu-button { display: grid; } }
 </style>

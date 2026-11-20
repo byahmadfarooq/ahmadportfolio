@@ -13,9 +13,10 @@ const groups = [
 
 <BaseLayout title="About | Ahmad Farooq" description="About Ahmad Farooq, a developer and builder based in Lahore.">
   <article class="site-shell section-pad about">
+    <img class="portrait" src="/ahmad.png" alt="Ahmad Farooq" width="150" height="150" />
     <p class="eyebrow">About</p>
     <h1 class="display">Ahmad Farooq</h1>
-    <p class="lead">Developer. I build websites and the systems behind them.</p>
+    <p class="lead">Systems engineer. I build websites and the systems behind them.</p>
     <div class="story body-copy" data-reveal>
       <p>I'm Ahmad, 20, based in Lahore. I build websites and the machinery that makes them work: CRMs, dashboards, automations, AI agents. Most people pick a side, frontend or backend, design or systems. I don't. The website and the engine behind it are one job to me.</p>
       <p>I'm self-taught. I learned by building things that had to actually run, not by collecting certificates. Kai, a ten-agent assistant that handles outreach, habits, and a live inbox, built in three days on Python and SQLite. A hand-tracking 3D viewer that runs in the browser. A scanner that reads a landing page and tells you what's costing you customers. A donation platform for a nonprofit. The through-line is range: I'll design the brand, write the code, wire the automation, and ship the whole thing.</p>
@@ -35,6 +36,7 @@ const groups = [
 
 <style>
   .about { max-width: 1000px; }
+  .portrait { width: 150px; height: 150px; border-radius: 20px; object-fit: cover; display: block; margin-bottom: 1.75rem; }
   h1 { margin: .8rem 0 1rem; font-size: clamp(4rem, 11vw, 8.5rem); }
   .lead { max-width: 44rem; margin: 0 0 3rem; color: #6e6e73; font-size: 1.25rem; line-height: 1.5; }
   .story { max-width: 44rem; font-size: 1.05rem; }

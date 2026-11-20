@@ -1,0 +1,57 @@
+<div class="system-graph" data-system-graph>
+  <canvas data-sg-canvas></canvas>
+</div>
+
+<style>
+  .system-graph { position: relative; width: 100%; height: clamp(360px, 42vw, 500px); }
+  .system-graph canvas { width: 100%; height: 100%; display: block; }
+  @media (max-width: 900px) { .system-graph { height: 320px; } }
+</style>
+
+<script>
+  (function () {
+    const wrap = document.querySelector('[data-system-graph]');
+    if (!wrap) return;
+    const canvas = wrap.querySelector('[data-sg-canvas]');
+    const ctx = canvas.getContext('2d');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const INK = '29,29,31';
+    const nodes = [
+      { id: 'web', label: 'Website', x: 0.5, y: 0.42, r: 30, hub: true },
+      { id: 'crm', label: 'CRM', x: 0.15, y: 0.22, r: 19 },
+      { id: 'out', label: 'Outreach', x: 0.85, y: 0.24, r: 19 },
+      { id: 'ai', label: 'AI agent', x: 0.87, y: 0.68, r: 19 },
+      { id: 'auto', label: 'Automation', x: 0.13, y: 0.72, r: 19 },
+      { id: 'dash', label: 'Dashboard', x: 0.5, y: 0.9, r: 19 },
+    ];
+    const edges = [['web','crm'],['web','out'],['web','ai'],['web','auto'],['web','dash'],['crm','auto'],['out','ai']];
+    const byId = {}; nodes.forEach(function (n, i) { byId[n.id] = n; n.ph = i * 1.3; });
+    const particles = edges.map(function (e, i) { return { e: i, p: Math.random(), s: 0.0022 + Math.random() * 0.0026 }; });
+    let W = 0, H = 0, dpr = 1, mx = -1, my = -1, px = 0, py = 0, hovered = null;
+    const t0 = performance.now();
+    function resize() { dpr = Math.min(window.devicePixelRatio || 1, 2); W = wrap.clientWidth; H = wrap.clientHeight; canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); if (reduced) requestAnimationFrame(draw); }
+    new ResizeObserver(resize).observe(wrap); resize();
+    wrap.addEventListener('pointermove', function (e) { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+    wrap.addEventListener('pointerleave', function () { mx = -1; my = -1; });
+    function draw(now) {
+      const t = (now - t0) / 1000;
+      const tx = mx < 0 ? 0 : (mx / W - 0.5) * 16, ty = my < 0 ? 0 : (my / H - 0.5) * 16;
+      px += (tx - px) * 0.06; py += (ty - py) * 0.06;
+      ctx.clearRect(0, 0, W, H);
+      nodes.forEach(function (n) { const bob = reduced ? 0 : Math.sin(t * 0.8 + n.ph) * 3; n.sx = n.x * W + px * (n.hub ? 0.5 : 1); n.sy = n.y * H + py * (n.hub ? 0.5 : 1) + bob; });
+      hovered = null; if (mx >= 0) { let best = 1e9; nodes.forEach(function (n) { const d = Math.hypot(n.sx - mx, n.sy - my); if (d < n.r + 14 && d < best) { best = d; hovered = n.id; } }); }
+      edges.forEach(function (e) { const a = byId[e[0]], b = byId[e[1]]; const hot = hovered && (e[0] === hovered || e[1] === hovered); ctx.strokeStyle = 'rgba(' + INK + ',' + (hot ? 0.38 : 0.13) + ')'; ctx.lineWidth = hot ? 1.6 : 1; ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke(); });
+      if (!reduced) particles.forEach(function (pt) { pt.p += pt.s; if (pt.p > 1) pt.p = 0; const e = edges[pt.e], a = byId[e[0]], b = byId[e[1]]; const hot = hovered && (e[0] === hovered || e[1] === hovered); const x = a.sx + (b.sx - a.sx) * pt.p, y = a.sy + (b.sy - a.sy) * pt.p; ctx.fillStyle = 'rgba(' + INK + ',' + (hot ? 0.85 : 0.5) + ')'; ctx.beginPath(); ctx.arc(x, y, 2, 0, 6.2832); ctx.fill(); });
+      nodes.forEach(function (n) { const isH = hovered === n.id; const r = n.r * (isH ? 1.12 : 1);
+        if (isH) { ctx.fillStyle = 'rgba(' + INK + ',0.06)'; ctx.beginPath(); ctx.arc(n.sx, n.sy, r + 14, 0, 6.2832); ctx.fill(); }
+        ctx.fillStyle = n.hub ? 'rgba(' + INK + ',0.06)' : 'rgba(251,251,253,1)'; ctx.beginPath(); ctx.arc(n.sx, n.sy, r, 0, 6.2832); ctx.fill();
+        ctx.strokeStyle = 'rgba(' + INK + ',' + (isH ? 0.85 : 0.5) + ')'; ctx.lineWidth = isH ? 1.6 : 1.2; ctx.beginPath(); ctx.arc(n.sx, n.sy, r, 0, 6.2832); ctx.stroke();
+        if (n.hub) { ctx.fillStyle = 'rgba(' + INK + ',0.8)'; ctx.beginPath(); ctx.arc(n.sx, n.sy, 4, 0, 6.2832); ctx.fill(); }
+        ctx.fillStyle = 'rgba(' + INK + ',' + (isH ? 0.95 : 0.66) + ')'; ctx.font = (isH ? 700 : 600) + " 13px 'Bricolage Grotesque', system-ui, sans-serif"; ctx.textAlign = 'center'; ctx.textBaseline = 'top'; ctx.fillText(n.label, n.sx, n.sy + r + 9);
+      });
+      if (!reduced) requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (reduced) requestAnimationFrame(draw); });
+  })();
+</script>

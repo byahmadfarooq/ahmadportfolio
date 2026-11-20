@@ -4,11 +4,11 @@ import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
 interface Props { title?: string; description?: string; image?: string; home?: boolean; }
-const { title = 'Ahmad Farooq | Developer', description = 'Developer in Lahore building websites, internal tools, and AI workflows.', image = '/og/default.svg', home = false } = Astro.props;
+const { title = 'Ahmad Farooq | Systems Engineer', description = 'Systems engineer in Lahore building websites, internal tools, and the systems that run them.', image = '/og/default.svg', home = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://ahmadfarooq.vercel.app');
 const imageUrl = new URL(image, canonical);
 const schema = home ? {
-  '@context': 'https://schema.org', '@type': 'Person', name: 'Ahmad Farooq', url: 'https://ahmadfarooq.vercel.app', jobTitle: 'Developer',
+  '@context': 'https://schema.org', '@type': 'Person', name: 'Ahmad Farooq', url: 'https://ahmadfarooq.vercel.app', jobTitle: 'Systems Engineer',
   worksFor: { '@type': 'Organization', name: 'Zotir Labs' },
   sameAs: ['https://www.linkedin.com/in/byahmadd/', 'https://github.com/byahmadfarooq', 'https://x.com/_byahmad', 'https://www.instagram.com/ahmaddfaroooq/']
 } : null;
@@ -20,6 +20,8 @@ const schema = home ? {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -33,11 +35,30 @@ const schema = home ? {
     <meta name="twitter:image" content={imageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Manrope:wght@500;600&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Manrope:wght@500;600&display=swap" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600&display=swap" />
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body>
+    <div class="preloader" data-preloader>
+      <div class="pl-inner">
+        <div class="pl-name"><span class="pl-word">Ahmad</span><span class="pl-word">Farooq</span></div>
+        <div class="pl-count"><span data-pl-count>0</span>%</div>
+      </div>
+    </div>
+    <script is:inline>
+      (function(){
+        var pl=document.querySelector('[data-preloader]'); if(!pl) return;
+        var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var seen=false; try{ seen=sessionStorage.getItem('af-seen')==='1'; }catch(e){}
+        function finish(){ pl.classList.add('done'); try{sessionStorage.setItem('af-seen','1');}catch(e){} setTimeout(function(){ pl.style.display='none'; },700); }
+        if(reduced||seen){ pl.style.display='none'; return; }
+        requestAnimationFrame(function(){ pl.classList.add('in'); });
+        var cnt=pl.querySelector('[data-pl-count]'), start=performance.now(), dur=1300;
+        function tick(now){ var k=Math.min((now-start)/dur,1); if(cnt) cnt.textContent=Math.round(k*100); if(k<1) requestAnimationFrame(tick); else finish(); }
+        requestAnimationFrame(tick);
+      })();
+    </script>
     <div class="dot-grid" aria-hidden="true"></div>
     <a class="skip-link" href="#content">Skip to content</a>
     <Nav />

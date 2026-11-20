@@ -5,13 +5,14 @@ import SoftFocusHeading from '../components/SoftFocusHeading.astro';
 import RotatingText from '../components/RotatingText.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ServiceRow from '../components/ServiceRow.astro';
+import SystemGraph from '../components/SystemGraph.astro';
 import { projects } from '../data/projects';
 ---
 
-<BaseLayout home title="Ahmad Farooq | Developer" description="Developer in Lahore building websites, internal tools, and AI workflows.">
+<BaseLayout home title="Ahmad Farooq | Systems Engineer" description="Systems engineer in Lahore building websites, internal tools, and the systems that run them.">
   <section class="hero site-shell">
     <div class="hero-copy">
-      <p class="eyebrow">Ahmad Farooq · Developer</p>
+      <p class="eyebrow">Ahmad Farooq · Systems Engineer</p>
       <SoftFocusHeading text="Websites that look right. Systems that do the work." class="display hero-title" />
       <p class="hero-sub">The site brings people in. The system behind it books the calls, follows up on every lead, and keeps working after you log off. Most of your competitors only built the first half.</p>
       <div class="hero-action">
@@ -20,6 +21,7 @@ import { projects } from '../data/projects';
       </div>
       <div class="rotating-strip"><RotatingText /></div>
     </div>
+    <div class="hero-graph"><SystemGraph /></div>
   </section>
 
   <section class="section-pad site-shell" data-reveal>
@@ -46,9 +48,10 @@ import { projects } from '../data/projects';
 </BaseLayout>
 
 <style>
-  .hero { min-height: 85svh; display: flex; align-items: center; padding-block: 7rem; }
-  .hero-copy { max-width: 52rem; }
-  :global(.hero-title) { margin: 1.2rem 0 0; font-weight: 800; line-height: 1.05; font-size: clamp(3rem, 6vw, 5rem); }
+  .hero { min-height: 85svh; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 2.5rem; padding-block: 6rem; }
+  .hero-copy { max-width: 40rem; }
+  .hero-graph { width: 100%; }
+  :global(.hero-title) { margin: 1.2rem 0 0; font-weight: 800; line-height: 1.05; font-size: clamp(2.4rem, 4.4vw, 4rem); }
   .hero-sub { max-width: 42rem; margin: 1.5rem 0 0; color: #6e6e73; font-size: clamp(1.125rem, 1.8vw, 1.25rem); line-height: 1.7; }
   .hero-action { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 2rem; }
   .rotating-strip { margin-top: 2.5rem; }
@@ -57,5 +60,6 @@ import { projects } from '../data/projects';
   .services-head { margin-bottom: 2rem; }
   .services-head h2 { max-width: 48rem; margin: .9rem 0 0; font-size: clamp(2.5rem, 6vw, 5rem); }
   .about-teaser p { max-width: 48rem; margin: 0 0 1.5rem; color: #6e6e73; font-size: clamp(1.6rem, 3.5vw, 3rem); line-height: 1.35; letter-spacing: -.035em; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 1.5rem; } .hero-graph { order: 2; } }
   @media (max-width: 800px) { .project-grid { grid-template-columns: 1fr; } }
 </style>
