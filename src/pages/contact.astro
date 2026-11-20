@@ -1,32 +1,148 @@
 ---
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
+const services = [
+  'A new website',
+  'A redesign of an existing site',
+  'Internal tools or a CRM',
+  'Automations (apps, outreach, workflows)',
+  'An AI agent or chatbot',
+  'Branding and design',
+  'Local SEO or e-commerce growth',
+  'Not sure yet',
+];
 ---
 
-<BaseLayout title="Contact | Ahmad Farooq" description="Book a project call with Ahmad Farooq.">
+<BaseLayout title="Contact | Ahmad Farooq" description="Tell Ahmad Farooq about your project and book a 20-minute call.">
   <section class="site-shell section-pad contact">
     <p class="eyebrow">Start a project</p>
-    <h1 class="display">Got a project?</h1>
-    <p class="sub">Tell me what you need. I'll tell you if I can help.</p>
-    <div class="cal-shell">
-      <div id="cal-embed"></div>
+    <h1 class="display">Tell me what you need</h1>
+    <p class="sub">Three quick questions, then pick a time. Takes a minute.</p>
+
+    <div class="booking-step">
+      <h2 id="services-label">What are you looking to build?</h2>
+      <div class="chips" role="group" aria-labelledby="services-label">
+        {services.map((service) => <button class="chip" type="button" aria-pressed="false" data-service={service}>{service}</button>)}
+      </div>
     </div>
-    <p class="email">Or email me at <a class="text-link" href="mailto:ahmad@zotirlabs.com">ahmad@zotirlabs.com</a></p>
+
+    <div class="booking-step detail-step" id="detail-step" hidden>
+      <label for="project-details">Anything specific I should know?</label>
+      <textarea id="project-details" placeholder="What are you working on? The more context, the better the call."></textarea>
+    </div>
+
+    <div class="booking-step calendar-step" id="calendar-step" hidden>
+      <h2>Find a time</h2>
+      <button class="primary-button" id="show-calendar" type="button">Show me your calendar</button>
+    </div>
+
+    <div class="calendar-area" id="calendar-area" hidden>
+      <div class="summary" aria-live="polite">
+        <p class="summary-label">Your call context</p>
+        <p id="summary-services"></p>
+        <p id="summary-details"></p>
+      </div>
+      <div class="cal-shell"><div id="cal-embed"></div></div>
+    </div>
+    <p class="email">Prefer email? <a class="text-link" href="mailto:ahmad@zotirlabs.com">ahmad@zotirlabs.com</a></p>
   </section>
 </BaseLayout>
 
-<script is:inline>
-  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement('script')).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === 'string') { cal.ns[namespace] = cal.ns[namespace] || api; p(cal, ['initNamespace', namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
-  Cal('init', {origin:'https://app.cal.com'});
-  Cal('inline', { elementOrSelector: '#cal-embed', calLink: 'ahmad-farooq-tuwcnw/20min', layout: 'month_view', config: { theme: 'light' } });
-  Cal('ui', { theme: 'light', styles: { branding: { brandColor: '#1d1d1f' } }, hideEventTypeDetails: false, layout: 'month_view' });
+<script>
+  declare global {
+    interface Window { Cal: any }
+  }
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-service]')];
+  const detailStep = document.querySelector<HTMLElement>('#detail-step')!;
+  const calendarStep = document.querySelector<HTMLElement>('#calendar-step')!;
+  const calendarArea = document.querySelector<HTMLElement>('#calendar-area')!;
+  const textarea = document.querySelector<HTMLTextAreaElement>('#project-details')!;
+  const selected = () => chips.filter((chip) => chip.getAttribute('aria-pressed') === 'true').map((chip) => chip.dataset.service!);
+  const reveal = (element: HTMLElement) => {
+    element.hidden = false;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      element.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 400, easing: 'ease-out' });
+    }
+  };
+  chips.forEach((chip) => chip.addEventListener('click', () => {
+    chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
+    const ready = selected().length > 0;
+    if (ready) {
+      if (detailStep.hidden) reveal(detailStep);
+      if (calendarStep.hidden) reveal(calendarStep);
+    } else {
+      detailStep.hidden = true;
+      calendarStep.hidden = true;
+      calendarArea.hidden = true;
+    }
+  }));
+
+  document.querySelector<HTMLButtonElement>('#show-calendar')?.addEventListener('click', () => {
+    const services = selected();
+    if (!services.length) return;
+    const details = textarea.value.trim();
+    const notes = `Needs: ${services.join(', ')}.${details ? ` Details: ${details}` : ''}`;
+    document.querySelector<HTMLElement>('#summary-services')!.textContent = `Needs: ${services.join(', ')}`;
+    document.querySelector<HTMLElement>('#summary-details')!.textContent = details ? `Details: ${details}` : '';
+    if (calendarArea.hidden) reveal(calendarArea);
+    calendarArea.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
+
+    if (window.Cal) return;
+    (function (C: Window, A: string, L: string) {
+      const queue = (api: any, args: IArguments) => api.q.push(args);
+      C.Cal = C.Cal || function () {
+        const cal = C.Cal;
+        const args = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          const script = document.createElement('script');
+          script.src = A;
+          document.head.appendChild(script);
+          cal.loaded = true;
+        }
+        if (args[0] === L) {
+          const api = function () { queue(api, arguments); };
+          const namespace = args[1];
+          api.q = api.q || [];
+          if (typeof namespace === 'string') {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            queue(cal, ['initNamespace', namespace] as any);
+          } else queue(cal, args);
+          return;
+        }
+        queue(cal, args);
+      };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+    const cal = window.Cal;
+    cal('init', '20min', { origin: 'https://app.cal.com' });
+    cal.ns['20min']('inline', {
+      elementOrSelector: '#cal-embed',
+      calLink: 'ahmad-farooq-tuwcnw/20min',
+      config: { layout: 'month_view', theme: 'light', notes, metadata: { services: services.join(', ') } }
+    });
+    cal.ns['20min']('ui', { theme: 'light', styles: { branding: { brandColor: '#1d1d1f' } }, layout: 'month_view' });
+  });
 </script>
 
 <style>
-  .contact { max-width: 1000px; }
-  h1 { margin: .75rem 0 1rem; font-size: clamp(4rem, 10vw, 8rem); }
-  .sub { margin: 0 0 3rem; color: #6e6e73; font-size: 1.1rem; }
+  .contact { max-width: 800px; }
+  h1 { max-width: 42rem; margin: .75rem 0 1rem; font-size: clamp(3.5rem, 8vw, 6.5rem); }
+  .sub { margin: 0 0 3rem; color: #6e6e73; font-size: 1.125rem; line-height: 1.6; }
+  .booking-step { margin: 2.5rem 0; }
+  h2, label { display: block; margin: 0 0 1.25rem; color: #1d1d1f; font-size: 1.125rem; font-weight: 600; }
+  .chips { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .chip { min-height: 44px; padding: .625rem 1.25rem; border: 1px solid #e8e8ed; border-radius: 999px; background: #fbfbfd; color: #1d1d1f; font: inherit; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s; }
+  .chip:hover { border-color: #86868b; }
+  .chip[aria-pressed="true"] { border-color: #1d1d1f; background: #1d1d1f; color: #fbfbfd; transform: scale(1.02); }
+  textarea { width: 100%; min-height: 8rem; padding: 1rem; border: 1px solid #e8e8ed; border-radius: 16px; background: #fbfbfd; color: #1d1d1f; font: inherit; resize: vertical; }
+  textarea:focus-visible { outline: 2px solid #1d1d1f; outline-offset: 2px; }
+  .calendar-area { margin-top: 3rem; }
+  .summary { padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; border: 1px solid #e8e8ed; border-radius: 16px; background: #fff; color: #6e6e73; line-height: 1.6; }
+  .summary p { margin: .25rem 0; }
+  .summary .summary-label { margin-bottom: .5rem; color: #1d1d1f; font-weight: 600; }
   .cal-shell { min-height: 720px; overflow: hidden; border: 1px solid #e8e8ed; border-radius: 16px; background: white; }
-  #cal-embed { width: 100%; height: 720px; overflow: auto; }
-  .email { margin: 2rem 0 0; color: #6e6e73; }
+  #cal-embed { width: 100%; min-height: 720px; }
+  .email { margin: 2rem 0 0; color: #86868b; font-size: .875rem; }
+  [hidden] { display: none !important; }
 </style>

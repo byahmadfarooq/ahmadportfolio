@@ -1,7 +1,7 @@
-<p class="rotating-text" data-rotating-text aria-live="polite">A website that converts</p>
+<p class="rotating-text">What I build: <span data-rotating-text aria-live="polite">websites that convert</span></p>
 
 <script>
-  const items = ['A website that converts', 'A CRM that runs itself', 'AI that handles your outreach', 'Tools your team will use'];
+  const items = ['websites that convert', 'CRMs that run themselves', 'AI that handles your outreach', 'tools your team will actually use'];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll<HTMLElement>('[data-rotating-text]').forEach((node) => {
     if (reduced) return;
@@ -12,12 +12,13 @@
         index = (index + 1) % items.length;
         node.textContent = items[index];
         node.classList.remove('leaving');
-      }, 240);
-    }, 3000);
+      }, 400);
+    }, 2800);
   });
 </script>
 
 <style>
-  .rotating-text { min-height: 1.4rem; margin: 1.25rem 0 0; color: #86868b; font-size: .875rem; text-align: center; transition: opacity .24s ease, transform .24s ease; }
-  .rotating-text.leaving { opacity: 0; transform: translateY(-6px); }
+  .rotating-text { margin: 0; color: #86868b; font-size: .875rem; text-align: left; }
+  [data-rotating-text] { display: inline-block; transition: opacity .4s ease, transform .4s ease; }
+  [data-rotating-text].leaving { opacity: 0; transform: translateY(-6px); }
 </style>

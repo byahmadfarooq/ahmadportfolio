@@ -18,10 +18,11 @@ const { slug, tag, name, description, large = false } = Astro.props;
 </BorderBeamCard>
 
 <style>
-  .project-card { height: 100%; }
-  .project-inner { min-height: 280px; padding: clamp(1.5rem, 4vw, 2.5rem); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e8e8ed; border-radius: 15px; transition: transform .3s ease, border-color .3s ease; }
+  :global(.project-card) { height: 100%; transition: transform .25s ease, box-shadow .25s ease; }
+  :global(.project-card:hover) { transform: translateY(-4px); box-shadow: 0 12px 32px rgb(0 0 0 / .08); }
+  .project-inner { min-height: 280px; padding: clamp(1.5rem, 4vw, 2.5rem); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e8e8ed; border-radius: 15px; transition: border-color .25s ease; }
   .project-inner.large { min-height: 340px; }
-  .project-card:hover .project-inner { transform: translateY(-3px); border-color: transparent; }
+  :global(.project-card:hover) .project-inner { border-color: transparent; }
   .project-top { display: flex; align-items: center; justify-content: space-between; }
   .project-top p { margin: 0; color: #86868b; font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
   .project-top span { width: 2.5rem; height: 2.5rem; border: 1px solid #e8e8ed; border-radius: 999px; }

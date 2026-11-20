@@ -1,37 +1,51 @@
 ---
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
-const tech = ['Astro', 'Next.js', 'React', 'Tailwind', 'Node.js', 'Python', 'OpenAI', 'Claude', 'n8n', 'Keystatic', 'WordPress', 'Figma'];
+const groups = [
+  { label: 'Build', tools: ['Python', 'JavaScript', 'TypeScript', 'Node'] },
+  { label: 'Frontend', tools: ['Astro', 'Next.js', 'React', 'Tailwind', 'Three.js', 'GSAP'] },
+  { label: 'Backend & Data', tools: ['SQLite', 'WebSockets', 'REST APIs', 'SMTP / IMAP'] },
+  { label: 'AI & Automation', tools: ['OpenAI', 'Claude', 'Gemini', 'Local models (Ollama)', 'n8n', 'Zapier', 'Make'] },
+  { label: 'CMS & Design', tools: ['Keystatic', 'WordPress', 'Figma'] },
+  { label: 'Ship', tools: ['Vercel', 'Git'] },
+];
 ---
 
 <BaseLayout title="About | Ahmad Farooq" description="About Ahmad Farooq, a developer and builder based in Lahore.">
   <article class="site-shell section-pad about">
     <p class="eyebrow">About</p>
     <h1 class="display">Ahmad Farooq</h1>
-    <p class="lead">Developer. Builder. Based in Lahore.</p>
-    <div class="story body-copy">
-      <p>I'm 20 and I live in Lahore. I build websites and the tools that make them work. CRMs, dashboards, AI agents, automations. Most people do one or the other. I do both.</p>
-      <p>I run Zotir Labs, where we build brands and websites for companies. I also co-founded Kaivex Systems for e-commerce agencies and local businesses. Before that, I freelanced, then worked at OneSoft and Big O Soft.</p>
-      <p>I don't hand you a website and disappear. I build the whole system.</p>
+    <p class="lead">Developer. I build websites and the systems behind them.</p>
+    <div class="story body-copy" data-reveal>
+      <p>I'm Ahmad, 20, based in Lahore. I build websites and the machinery that makes them work: CRMs, dashboards, automations, AI agents. Most people pick a side, frontend or backend, design or systems. I don't. The website and the engine behind it are one job to me.</p>
+      <p>I'm self-taught. I learned by building things that had to actually run, not by collecting certificates. Kai, a ten-agent assistant that handles outreach, habits, and a live inbox, built in three days on Python and SQLite. A hand-tracking 3D viewer that runs in the browser. A scanner that reads a landing page and tells you what's costing you customers. A donation platform for a nonprofit. The through-line is range: I'll design the brand, write the code, wire the automation, and ship the whole thing.</p>
+      <p>I run two companies. Zotir Labs, where we build brands and websites for owner-led businesses, and Kaivex Systems, for local SEO and e-commerce growth. When I'm not building, I write about making things, and about the quiet habit of outsourcing our thinking to machines.</p>
+      <p class="closing">You won't find me on camera. You'll find the work, and it holds up.</p>
     </div>
-    <section class="tools">
-      <p class="eyebrow">What I work with</p>
-      <h2 class="display">Tools for the whole build</h2>
-      <div class="pills">{tech.map((item) => <span>{item}</span>)}</div>
+    <section class="tools" data-reveal>
+      <h2 class="display">What I work with</h2>
+      {groups.map((group) => <div class="tool-group" data-reveal>
+        <h3>{group.label}</h3>
+        <div class="pills" data-reveal="group">{group.tools.map((item) => <span>{item}</span>)}</div>
+      </div>)}
     </section>
-    <a class="call" href="/contact">Book a free call</a>
+    <a class="primary-button about-cta" href="/contact">Book 20 minutes with me</a>
   </article>
 </BaseLayout>
 
 <style>
   .about { max-width: 1000px; }
   h1 { margin: .8rem 0 1rem; font-size: clamp(4rem, 11vw, 8.5rem); }
-  .lead { margin: 0 0 4rem; color: #86868b; font-size: clamp(1.2rem, 3vw, 2rem); }
-  .story { max-width: 44rem; font-size: 1.1rem; }
-  .story p { margin: 0 0 1.5rem; }
-  .tools { margin-top: 6rem; padding-top: 3rem; border-top: 1px solid #e8e8ed; }
-  .tools h2 { margin: .75rem 0 2rem; font-size: clamp(2.25rem, 5vw, 4rem); }
-  .pills { display: flex; flex-wrap: wrap; gap: .75rem; }
-  .pills span { padding: .7rem 1rem; border: 1px solid #e8e8ed; border-radius: 999px; color: #6e6e73; }
-  .call { display: inline-block; margin-top: 4rem; padding: .9rem 1.5rem; border-radius: 12px; background: #1d1d1f; color: #fbfbfd; text-decoration: none; font-weight: 600; }
+  .lead { max-width: 44rem; margin: 0 0 3rem; color: #6e6e73; font-size: 1.25rem; line-height: 1.5; }
+  .story { max-width: 44rem; font-size: 1.05rem; }
+  .story p { margin: 0 0 1.25rem; }
+  .story .closing { margin-top: 2rem; color: #1d1d1f; font-weight: 600; }
+  .tools { max-width: 44rem; margin-top: 4rem; padding-top: 3rem; border-top: 1px solid #e8e8ed; }
+  .tools h2 { margin: 0 0 2.5rem; font-size: clamp(2.25rem, 5vw, 4rem); }
+  .tool-group { margin-bottom: 2rem; }
+  .tool-group h3 { margin: 0 0 .75rem; color: #86868b; font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+  .pills { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .pills span { padding: .375rem 1rem; border: 1px solid #e8e8ed; border-radius: 999px; color: #6e6e73; font-size: .875rem; transition: border-color .2s ease; }
+  .pills span:hover { border-color: #1d1d1f; }
+  .about-cta { margin-top: 2rem; }
 </style>

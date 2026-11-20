@@ -38,9 +38,36 @@ const schema = home ? {
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body>
+    <div class="dot-grid" aria-hidden="true"></div>
     <a class="skip-link" href="#content">Skip to content</a>
     <Nav />
     <main id="content"><slot /></main>
     <Footer />
   </body>
 </html>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const grid = document.querySelector<HTMLElement>('.dot-grid');
+  if (!reduced.matches) {
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => {
+      const group = element.getAttribute('data-reveal') === 'group' ? element.querySelectorAll(':scope > *') : [element];
+      gsap.fromTo(group, { opacity: 0, y: 20 }, {
+        opacity: 1, y: 0, duration: .6, stagger: .08, ease: 'power2.out',
+        scrollTrigger: { trigger: element, start: 'top 85%', once: true }
+      });
+    });
+    let queued = false;
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        if (grid) grid.style.transform = `translate3d(0, ${-(scrollY * .15) % 28}px, 0)`;
+        queued = false;
+      });
+    }, { passive: true });
+  }
+</script>
