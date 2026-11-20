@@ -1,0 +1,19 @@
+---
+interface Props { tag?: 'a' | 'div'; href?: string; class?: string; dark?: boolean; }
+const { tag: Tag = 'div', href, class: className = '', dark = false } = Astro.props;
+---
+
+<Tag href={href} class:list={['border-beam-wrapper', className, { dark }]}>
+  <span class="border-beam-bg" aria-hidden="true"></span>
+  <span class="border-beam-content"><slot /></span>
+</Tag>
+
+<style>
+  .border-beam-wrapper { position: relative; display: block; overflow: hidden; border-radius: 16px; padding: 1px; color: inherit; text-decoration: none; }
+  .border-beam-bg { position: absolute; inset: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent 0%, transparent 70%, #c7c7cc 75%, transparent 80%, transparent 100%); animation: spin 4s linear infinite; animation-play-state: paused; will-change: transform; }
+  .border-beam-wrapper:hover .border-beam-bg { animation-play-state: running; }
+  .border-beam-content { position: relative; display: block; height: 100%; border-radius: 15px; background: #fbfbfd; }
+  .dark .border-beam-content { background: #1d1d1f; color: #fbfbfd; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .border-beam-bg { animation: none; background: #e8e8ed; } }
+</style>

@@ -1,0 +1,22 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Terms of Service | Ahmad Farooq" description="Terms of service for Ahmad Farooq's website.">
+  <article class="site-shell section-pad legal-page">
+    <h1 class="display">Terms of Service</h1><p class="updated">Last updated November 20, 2026</p>
+    <h2>Site ownership</h2><p>This website is owned and operated by Ahmad Farooq.</p>
+    <h2>Intellectual property</h2><p>Unless stated otherwise, all writing, design, code, and other content on this site is owned by Ahmad Farooq.</p>
+    <h2>No warranties</h2><p>This site and its content are provided as available without warranties of any kind.</p>
+    <h2>Limitation of liability</h2><p>Ahmad Farooq is not liable for losses arising from use of this site or reliance on its content.</p>
+    <h2>Governing law</h2><p>These terms are governed by the applicable laws of Pakistan.</p>
+    <h2>Contact</h2><p>Questions about these terms can be sent to <a href="mailto:ahmad@zotirlabs.com">ahmad@zotirlabs.com</a>.</p>
+  </article>
+</BaseLayout>
+<style>
+  .legal-page { max-width: 760px; }
+  h1 { margin: 0 0 1rem; font-size: clamp(3rem, 7vw, 5.5rem); }
+  .updated { margin-bottom: 4rem; color: #86868b; }
+  h2 { margin: 2.5rem 0 .7rem; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.5rem; }
+  p { color: #6e6e73; line-height: 1.75; } a { color: #1d1d1f; }
+</style>

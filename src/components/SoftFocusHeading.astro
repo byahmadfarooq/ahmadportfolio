@@ -1,0 +1,32 @@
+---
+interface Props { text: string; tag?: 'h1' | 'h2' | 'h3'; class?: string; }
+const { text, tag: Tag = 'h1', class: className = '' } = Astro.props;
+---
+
+<Tag class={className} data-soft-focus aria-label={text}>
+  {text.split(' ').map((word) => <span class="word" aria-hidden="true">{word}</span>)}
+</Tag>
+
+<style>
+  [data-soft-focus] { display: flex; flex-wrap: wrap; column-gap: .22em; }
+  .word { display: inline-block; opacity: 0; filter: blur(10px); }
+  .word.motion-ready { opacity: 1; filter: none; }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('[data-soft-focus]').forEach((heading) => {
+    const words = heading.querySelectorAll('.word');
+    if (reduced) {
+      words.forEach((word) => word.classList.add('motion-ready'));
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      gsap.to(words, { opacity: 1, filter: 'blur(0px)', duration: .6, stagger: .06, ease: 'power2.out' });
+      observer.disconnect();
+    }, { threshold: .25 });
+    observer.observe(heading);
+  });
+</script>

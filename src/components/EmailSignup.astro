@@ -1,0 +1,20 @@
+<div class="signup">
+  <p class="title">Get new notes in your inbox</p>
+  <p class="copy">No spam. Unsubscribe anytime.</p>
+  <form action="#" method="POST">
+    <label class="sr-only" for="signup-email">Email address</label>
+    <input id="signup-email" type="email" name="email" required placeholder="your@email.com" />
+    <button type="submit">Subscribe</button>
+  </form>
+</div>
+
+<style>
+  .signup { max-width: 32rem; padding: 2rem; border: 1px solid #e8e8ed; border-radius: 16px; }
+  .title { margin: 0 0 .4rem; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.125rem; font-weight: 700; }
+  .copy { margin: 0 0 1rem; color: #6e6e73; font-size: .875rem; }
+  form { display: flex; gap: .5rem; }
+  input { min-width: 0; flex: 1; padding: .85rem 1rem; border: 1px solid #e8e8ed; border-radius: 12px; background: #fbfbfd; font: inherit; font-size: .875rem; }
+  button { padding: .85rem 1.4rem; border: 0; border-radius: 12px; background: #1d1d1f; color: #fbfbfd; font: inherit; font-size: .875rem; font-weight: 600; cursor: pointer; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  @media (max-width: 520px) { form { flex-direction: column; } }
+</style>

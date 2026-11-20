@@ -1,0 +1,58 @@
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="menu-panel" role="dialog" aria-modal="true" aria-label="Site navigation">
+    <button class="close-menu" type="button" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+    </button>
+    <nav aria-label="Mobile navigation">
+      <a href="/work">Work</a>
+      <a href="/about">About</a>
+      <a href="/lab-notes">Lab Notes</a>
+      <a class="call-link" href="/contact">Book a free call</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+  const overlay = document.querySelector<HTMLElement>('#mobile-menu');
+  const opener = document.querySelector<HTMLButtonElement>('[data-open-menu]');
+  const closer = overlay?.querySelector<HTMLButtonElement>('.close-menu');
+  const focusables = () => Array.from(overlay?.querySelectorAll<HTMLElement>('a, button') ?? []);
+  const close = () => {
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    opener?.focus();
+  };
+  const open = () => {
+    if (!overlay) return;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closer?.focus();
+  };
+  opener?.addEventListener('click', open);
+  closer?.addEventListener('click', close);
+  overlay?.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+  document.addEventListener('keydown', (event) => {
+    if (!overlay?.classList.contains('open')) return;
+    if (event.key === 'Escape') close();
+    if (event.key !== 'Tab') return;
+    const items = focusables();
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+    if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  });
+</script>
+
+<style>
+  .mobile-menu { position: fixed; inset: 0; z-index: 60; display: none; background: rgb(29 29 31 / .22); backdrop-filter: blur(8px); }
+  .mobile-menu.open { display: block; }
+  .menu-panel { position: absolute; inset: 0 0 0 auto; width: min(88vw, 420px); padding: 1.25rem; background: #fbfbfd; transform: translateX(100%); animation: slide-in .32s ease forwards; }
+  .close-menu { display: grid; place-items: center; margin-left: auto; width: 44px; height: 44px; border: 1px solid #e8e8ed; border-radius: 999px; background: transparent; color: #1d1d1f; cursor: pointer; }
+  nav { display: grid; gap: .4rem; margin-top: clamp(4rem, 12vh, 7rem); }
+  nav a { padding: .7rem 0; color: #1d1d1f; font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(2rem, 9vw, 3.5rem); font-weight: 700; letter-spacing: -.05em; text-decoration: none; }
+  nav a.call-link { margin-top: 1rem; padding: 1rem 1.25rem; border-radius: 12px; background: #1d1d1f; color: #fbfbfd; font-family: 'Manrope', sans-serif; font-size: 1rem; text-align: center; letter-spacing: 0; }
+  @keyframes slide-in { to { transform: translateX(0); } }
+</style>

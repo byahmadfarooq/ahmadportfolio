@@ -1,0 +1,22 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Privacy Policy | Ahmad Farooq" description="Privacy policy for Ahmad Farooq's website.">
+  <article class="site-shell section-pad legal-page">
+    <h1 class="display">Privacy Policy</h1><p class="updated">Last updated November 20, 2026</p>
+    <h2>What we collect</h2><p>Contact form submissions may include your name, email address, and message. Vercel Analytics may collect aggregate page views without collecting personal information.</p>
+    <h2>How we use it</h2><p>Information is used to respond to inquiries and understand how the site is used.</p>
+    <h2>Cookies</h2><p>This site uses only essential cookies and does not use tracking cookies.</p>
+    <h2>Third parties</h2><p>Cal.com provides booking and Vercel provides hosting and privacy-friendly analytics. Your information is never sold.</p>
+    <h2>Your rights</h2><p>You may request deletion of your information by emailing <a href="mailto:ahmad@zotirlabs.com">ahmad@zotirlabs.com</a>.</p>
+    <h2>Contact</h2><p>Questions about this policy can be sent to <a href="mailto:ahmad@zotirlabs.com">ahmad@zotirlabs.com</a>.</p>
+  </article>
+</BaseLayout>
+<style>
+  .legal-page { max-width: 760px; }
+  h1 { margin: 0 0 1rem; font-size: clamp(3rem, 7vw, 5.5rem); }
+  .updated { margin-bottom: 4rem; color: #86868b; }
+  h2 { margin: 2.5rem 0 .7rem; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.5rem; }
+  p { color: #6e6e73; line-height: 1.75; } a { color: #1d1d1f; }
+</style>

@@ -1,0 +1,37 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+const tech = ['Astro', 'Next.js', 'React', 'Tailwind', 'Node.js', 'Python', 'OpenAI', 'Claude', 'n8n', 'Keystatic', 'WordPress', 'Figma'];
+---
+
+<BaseLayout title="About | Ahmad Farooq" description="About Ahmad Farooq, a developer and builder based in Lahore.">
+  <article class="site-shell section-pad about">
+    <p class="eyebrow">About</p>
+    <h1 class="display">Ahmad Farooq</h1>
+    <p class="lead">Developer. Builder. Based in Lahore.</p>
+    <div class="story body-copy">
+      <p>I'm 20 and I live in Lahore. I build websites and the tools that make them work. CRMs, dashboards, AI agents, automations. Most people do one or the other. I do both.</p>
+      <p>I run Zotir Labs, where we build brands and websites for companies. I also co-founded Kaivex Systems for e-commerce agencies and local businesses. Before that, I freelanced, then worked at OneSoft and Big O Soft.</p>
+      <p>I don't hand you a website and disappear. I build the whole system.</p>
+    </div>
+    <section class="tools">
+      <p class="eyebrow">What I work with</p>
+      <h2 class="display">Tools for the whole build</h2>
+      <div class="pills">{tech.map((item) => <span>{item}</span>)}</div>
+    </section>
+    <a class="call" href="/contact">Book a free call</a>
+  </article>
+</BaseLayout>
+
+<style>
+  .about { max-width: 1000px; }
+  h1 { margin: .8rem 0 1rem; font-size: clamp(4rem, 11vw, 8.5rem); }
+  .lead { margin: 0 0 4rem; color: #86868b; font-size: clamp(1.2rem, 3vw, 2rem); }
+  .story { max-width: 44rem; font-size: 1.1rem; }
+  .story p { margin: 0 0 1.5rem; }
+  .tools { margin-top: 6rem; padding-top: 3rem; border-top: 1px solid #e8e8ed; }
+  .tools h2 { margin: .75rem 0 2rem; font-size: clamp(2.25rem, 5vw, 4rem); }
+  .pills { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .pills span { padding: .7rem 1rem; border: 1px solid #e8e8ed; border-radius: 999px; color: #6e6e73; }
+  .call { display: inline-block; margin-top: 4rem; padding: .9rem 1.5rem; border-radius: 12px; background: #1d1d1f; color: #fbfbfd; text-decoration: none; font-weight: 600; }
+</style>

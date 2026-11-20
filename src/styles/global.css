@@ -1,0 +1,38 @@
+@config "../../tailwind.config.mjs";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #fbfbfd;
+    color: #1d1d1f;
+  }
+  body {
+    margin: 0;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background-color: #e8e8ed; }
+  *:focus-visible { outline: 2px solid #1d1d1f; outline-offset: 3px; }
+}
+
+.site-shell { width: min(1200px, calc(100% - 2rem)); margin-inline: auto; }
+.section-pad { padding-block: clamp(4.5rem, 9vw, 8rem); }
+.eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: #86868b; }
+.display { font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 700; letter-spacing: -.055em; line-height: .98; }
+.body-copy { color: #6e6e73; line-height: 1.75; }
+.text-link { color: #1d1d1f; text-decoration: underline; text-underline-offset: 4px; transition: opacity .2s ease; }
+.text-link:hover { opacity: .62; }
+.skip-link { position: fixed; top: .75rem; left: .75rem; z-index: 100; transform: translateY(-160%); background: #1d1d1f; color: #fbfbfd; padding: .75rem 1rem; border-radius: 12px; }
+.skip-link:focus { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

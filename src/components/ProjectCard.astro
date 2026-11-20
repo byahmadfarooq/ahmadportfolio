@@ -1,0 +1,30 @@
+---
+import BorderBeamCard from './BorderBeamCard.astro';
+interface Props { slug: string; tag: string; name: string; description: string; large?: boolean; }
+const { slug, tag, name, description, large = false } = Astro.props;
+---
+
+<BorderBeamCard tag="a" href={`/work/${slug}`} class="project-card">
+  <article class:list={['project-inner', { large }]}>
+    <div class="project-top">
+      <p>{tag}</p>
+      <span aria-hidden="true"></span>
+    </div>
+    <div>
+      <h3>{name}</h3>
+      <p class="description">{description}</p>
+    </div>
+  </article>
+</BorderBeamCard>
+
+<style>
+  .project-card { height: 100%; }
+  .project-inner { min-height: 280px; padding: clamp(1.5rem, 4vw, 2.5rem); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e8e8ed; border-radius: 15px; transition: transform .3s ease, border-color .3s ease; }
+  .project-inner.large { min-height: 340px; }
+  .project-card:hover .project-inner { transform: translateY(-3px); border-color: transparent; }
+  .project-top { display: flex; align-items: center; justify-content: space-between; }
+  .project-top p { margin: 0; color: #86868b; font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .project-top span { width: 2.5rem; height: 2.5rem; border: 1px solid #e8e8ed; border-radius: 999px; }
+  h3 { margin: 0 0 .75rem; font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(1.65rem, 3vw, 2.25rem); letter-spacing: -.04em; }
+  .description { margin: 0; max-width: 34rem; color: #6e6e73; line-height: 1.65; }
+</style>

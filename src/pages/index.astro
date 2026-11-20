@@ -1,0 +1,65 @@
+---
+export const prerender = true;
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SoftFocusHeading from '../components/SoftFocusHeading.astro';
+import BorderBeamCard from '../components/BorderBeamCard.astro';
+import RotatingText from '../components/RotatingText.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ServiceRow from '../components/ServiceRow.astro';
+import { projects } from '../data/projects';
+---
+
+<BaseLayout home title="Ahmad Farooq | Developer" description="Developer in Lahore building websites, internal tools, and AI workflows.">
+  <section class="hero site-shell">
+    <div class="hero-copy">
+      <SoftFocusHeading text="I build your website. Then I build what runs it." class="display hero-title" />
+      <p class="hero-sub">Most agencies hand you a website and leave. I stick around and build the systems that make it actually work.</p>
+      <div class="hero-action">
+        <BorderBeamCard tag="a" href="/work" class="hero-cta" dark><span>See my work</span></BorderBeamCard>
+        <RotatingText />
+      </div>
+    </div>
+    <div class="hero-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+  </section>
+
+  <section class="section-pad site-shell">
+    <p class="eyebrow">Selected work</p>
+    <div class="project-grid">{projects.map((project) => <ProjectCard {...project} />)}</div>
+  </section>
+
+  <section class="section-pad services-wrap">
+    <div class="site-shell services-head">
+      <p class="eyebrow">What you get</p>
+      <h2 class="display">Three things, done right</h2>
+    </div>
+    <div class="site-shell">
+      <ServiceRow name="Websites and brands" description="You get a site that looks right and works right. The whole thing." />
+      <ServiceRow name="Internal tools and automation" description="Dashboards, CRMs, workflows. Replace the spreadsheets your team hates." />
+      <ServiceRow name="AI workflows" description="Agents, bots, smart pipelines. The stuff that runs while you sleep." />
+    </div>
+  </section>
+
+  <section class="section-pad site-shell about-teaser">
+    <p>I'm Ahmad. I'm 20, based in Lahore, and I build things for a living. Not just websites. The whole system behind them.</p>
+    <a class="text-link" href="/about">More about me</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { min-height: calc(100svh - 74px); display: grid; grid-template-columns: 1.25fr .55fr; align-items: center; gap: 4rem; padding-block: 5rem; }
+  .hero-copy { max-width: 58rem; }
+  :global(.hero-title) { margin: 0; font-size: clamp(3.35rem, 8vw, 7.8rem); }
+  .hero-sub { max-width: 36rem; margin: 2rem 0 0; color: #6e6e73; font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.7; }
+  .hero-action { width: max-content; margin-top: 2rem; }
+  :global(.hero-cta .border-beam-content) { padding: .9rem 1.75rem; border-radius: 11px; font-weight: 600; }
+  .hero-mark { position: relative; aspect-ratio: 1; }
+  .hero-mark span { position: absolute; inset: 12%; border: 1px solid #e8e8ed; border-radius: 38% 62% 58% 42% / 42% 38% 62% 58%; }
+  .hero-mark span:nth-child(2) { inset: 26%; transform: rotate(25deg); background: #f3f3f5; }
+  .hero-mark span:nth-child(3) { inset: 41%; transform: rotate(-18deg); background: #1d1d1f; }
+  .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+  .services-wrap { background: #f3f3f5; }
+  .services-head { margin-bottom: 2rem; }
+  .services-head h2 { max-width: 48rem; margin: .9rem 0 0; font-size: clamp(2.5rem, 6vw, 5rem); }
+  .about-teaser p { max-width: 48rem; margin: 0 0 1.5rem; color: #6e6e73; font-size: clamp(1.6rem, 3.5vw, 3rem); line-height: 1.35; letter-spacing: -.035em; }
+  @media (max-width: 800px) { .hero { grid-template-columns: 1fr; } .hero-mark { display: none; } .project-grid { grid-template-columns: 1fr; } }
+</style>

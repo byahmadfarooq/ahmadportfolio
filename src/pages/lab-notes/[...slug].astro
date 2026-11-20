@@ -1,0 +1,17 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmailSignup from '../../components/EmailSignup.astro';
+export function getStaticPaths() {
+  const modules = import.meta.glob('../../content/lab-notes/*.md', { eager: true });
+  return Object.entries(modules).map(([path, mod]: [string, any]) => ({ params: { slug: path.split('/').pop()?.replace('.md', '') }, props: { mod } }));
+}
+const { mod } = Astro.props;
+const { Content, frontmatter } = mod;
+---
+<BaseLayout title={`${frontmatter.title} | Ahmad Farooq`} description={frontmatter.excerpt}>
+  <article class="site-shell section-pad note"><a class="text-link" href="/lab-notes">Back to Lab Notes</a><time datetime={frontmatter.date}>{new Date(frontmatter.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time><h1 class="display">{frontmatter.title}</h1><div class="prose body-copy"><Content /></div><div class="signup-wrap"><EmailSignup /></div></article>
+</BaseLayout>
+<style>
+  .note { max-width: 800px; } time { display: block; margin: 3rem 0 .7rem; color: #86868b; font-size: .875rem; } h1 { margin: 0 0 3rem; font-size: clamp(3rem, 7vw, 5.5rem); } .prose { max-width: 44rem; font-size: 1.05rem; } .prose :global(a) { color: #1d1d1f; text-decoration: underline; } .prose :global(h2) { margin-top: 2.5rem; color: #1d1d1f; font-family: 'Bricolage Grotesque', sans-serif; } .signup-wrap { margin-top: 5rem; }
+</style>

@@ -1,0 +1,20 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EmailSignup from '../../components/EmailSignup.astro';
+const modules = import.meta.glob('../../content/lab-notes/*.md', { eager: true });
+const posts = Object.entries(modules).map(([path, mod]: [string, any]) => ({ slug: path.split('/').pop()?.replace('.md', ''), ...mod.frontmatter })).sort((a: any, b: any) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+---
+
+<BaseLayout title="Lab Notes | Ahmad Farooq" description="What Ahmad Farooq is building, learning, and thinking about.">
+  <section class="site-shell section-pad notes-head">
+    <p class="eyebrow">Writing</p><h1 class="display">Lab Notes</h1><p>What I'm building, learning, and thinking about.</p><EmailSignup />
+  </section>
+  <section class="site-shell notes-list">
+    {posts.length ? posts.map((post: any) => <article><time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time><h2><a href={`/lab-notes/${post.slug}`}>{post.title}</a></h2><p>{post.excerpt}</p></article>) : <p class="empty">Nothing here yet. Check back soon.</p>}
+  </section>
+</BaseLayout>
+<style>
+  .notes-head { padding-bottom: 4rem; } h1 { margin: .8rem 0 1rem; font-size: clamp(4rem, 10vw, 8rem); } .notes-head > p:not(.eyebrow) { margin: 0 0 2rem; color: #6e6e73; font-size: 1.1rem; }
+  .notes-list { padding-bottom: 7rem; } article { max-width: 760px; padding: 2.25rem 0; border-top: 1px solid #e8e8ed; } time { color: #86868b; font-size: .75rem; } h2 { margin: .6rem 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.7rem; } h2 a { color: #1d1d1f; text-decoration: none; } article p, .empty { color: #6e6e73; line-height: 1.7; }
+</style>

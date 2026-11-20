@@ -1,0 +1,16 @@
+# Ahmad Farooq
+> Developer based in Lahore. Builds websites, internal tools, and AI workflows.
+
+## About
+Ahmad Farooq is a developer who builds websites and the systems that run them: internal tools, automations, and AI workflows. He runs Zotir Labs and co-founded Kaivex Systems.
+
+## Work
+- Kai: 10-agent AI platform for outreach, habits, CRM, and chat
+- Blackbox: Landing page conversion scanner
+- Zotir Labs: Full brand and website for a web agency
+- Kaivex Systems: Digital infrastructure for e-commerce agencies
+
+## Contact
+- Email: ahmad@zotirlabs.com
+- LinkedIn: linkedin.com/in/byahmadd
+- GitHub: github.com/byahmadfarooq
