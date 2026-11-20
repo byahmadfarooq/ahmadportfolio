@@ -2,15 +2,11 @@
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 const services = [
-  'A new website',
-  'A redesign of an existing site',
-  'Internal tools or a CRM',
-  'Automations (apps, outreach, workflows)',
-  'An AI agent or chatbot',
-  'Branding and design',
-  'Local SEO or e-commerce growth',
-  'Not sure yet',
+  'A new website', 'A redesign of an existing site', 'Internal tools or a CRM',
+  'Automations (apps, outreach, workflows)', 'An AI agent or chatbot',
+  'Branding and design', 'Local SEO or e-commerce growth', 'Not sure yet',
 ];
+const timelines = ['As soon as possible', 'In the next few months', 'Just exploring'];
 ---
 
 <BaseLayout title="Contact | Ahmad Farooq" description="Tell Ahmad Farooq about your project and book a 20-minute call.">
@@ -20,27 +16,33 @@ const services = [
     <p class="sub">Three quick questions, then pick a time. Takes a minute.</p>
 
     <div class="booking-step">
-      <h2 id="services-label">What are you looking to build?</h2>
-      <div class="chips" role="group" aria-labelledby="services-label">
-        {services.map((service) => <button class="chip" type="button" aria-pressed="false" data-service={service}>{service}</button>)}
+      <h2 id="q1">1. What are you looking to build?</h2>
+      <div class="chips" role="group" aria-labelledby="q1">
+        {services.map((s) => <button class="chip" type="button" aria-pressed="false" data-build data-value={s}>{s}</button>)}
       </div>
     </div>
 
-    <div class="booking-step detail-step" id="detail-step" hidden>
-      <label for="project-details">Anything specific I should know?</label>
+    <div class="booking-step" id="step-2" hidden>
+      <h2 id="q2">2. What's your timeline?</h2>
+      <div class="chips" role="group" aria-labelledby="q2">
+        {timelines.map((s) => <button class="chip" type="button" aria-pressed="false" data-timeline data-value={s}>{s}</button>)}
+      </div>
+    </div>
+
+    <div class="booking-step" id="step-3" hidden>
+      <label for="project-details">3. Anything specific I should know? <span class="optional">optional</span></label>
       <textarea id="project-details" placeholder="What are you working on? The more context, the better the call."></textarea>
     </div>
 
-    <div class="booking-step calendar-step" id="calendar-step" hidden>
-      <h2>Find a time</h2>
+    <div class="booking-step" id="calendar-step" hidden>
+      <h2>Pick a time</h2>
       <button class="primary-button" id="show-calendar" type="button">Show me your calendar</button>
     </div>
 
     <div class="calendar-area" id="calendar-area" hidden>
       <div class="summary" aria-live="polite">
         <p class="summary-label">Your call context</p>
-        <p id="summary-services"></p>
-        <p id="summary-details"></p>
+        <p id="summary-text"></p>
       </div>
       <div class="cal-shell"><div id="cal-embed"></div></div>
     </div>
@@ -49,78 +51,60 @@ const services = [
 </BaseLayout>
 
 <script>
-  declare global {
-    interface Window { Cal: any }
-  }
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-service]')];
-  const detailStep = document.querySelector<HTMLElement>('#detail-step')!;
-  const calendarStep = document.querySelector<HTMLElement>('#calendar-step')!;
-  const calendarArea = document.querySelector<HTMLElement>('#calendar-area')!;
+  declare global { interface Window { Cal: any } }
+  const buildChips = [...document.querySelectorAll<HTMLButtonElement>('[data-build]')];
+  const timeChips = [...document.querySelectorAll<HTMLButtonElement>('[data-timeline]')];
+  const step2 = document.querySelector<HTMLElement>('#step-2')!;
+  const step3 = document.querySelector<HTMLElement>('#step-3')!;
+  const calStep = document.querySelector<HTMLElement>('#calendar-step')!;
+  const calArea = document.querySelector<HTMLElement>('#calendar-area')!;
   const textarea = document.querySelector<HTMLTextAreaElement>('#project-details')!;
-  const selected = () => chips.filter((chip) => chip.getAttribute('aria-pressed') === 'true').map((chip) => chip.dataset.service!);
-  const reveal = (element: HTMLElement) => {
-    element.hidden = false;
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      element.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 400, easing: 'ease-out' });
-    }
+  const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveal = (el: HTMLElement) => {
+    if (!el.hidden) return;
+    el.hidden = false;
+    if (!reducedMotion()) el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 400, easing: 'ease-out' });
   };
-  chips.forEach((chip) => chip.addEventListener('click', () => {
+  const hide = (el: HTMLElement) => { el.hidden = true; };
+  const selectedBuild = () => buildChips.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.value!);
+  const selectedTimeline = () => { const c = timeChips.find((c) => c.getAttribute('aria-pressed') === 'true'); return c ? c.dataset.value! : ''; };
+
+  buildChips.forEach((chip) => chip.addEventListener('click', () => {
     chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
-    const ready = selected().length > 0;
-    if (ready) {
-      if (detailStep.hidden) reveal(detailStep);
-      if (calendarStep.hidden) reveal(calendarStep);
-    } else {
-      detailStep.hidden = true;
-      calendarStep.hidden = true;
-      calendarArea.hidden = true;
-    }
+    if (selectedBuild().length) reveal(step2);
+    else { [step2, step3, calStep, calArea].forEach(hide); timeChips.forEach((c) => c.setAttribute('aria-pressed', 'false')); }
+  }));
+
+  timeChips.forEach((chip) => chip.addEventListener('click', () => {
+    const was = chip.getAttribute('aria-pressed') === 'true';
+    timeChips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+    chip.setAttribute('aria-pressed', String(!was));
+    if (selectedTimeline()) { reveal(step3); reveal(calStep); }
+    else { [step3, calStep, calArea].forEach(hide); }
   }));
 
   document.querySelector<HTMLButtonElement>('#show-calendar')?.addEventListener('click', () => {
-    const services = selected();
-    if (!services.length) return;
+    const build = selectedBuild();
+    if (!build.length) return;
+    const tl = selectedTimeline();
     const details = textarea.value.trim();
-    const notes = `Needs: ${services.join(', ')}.${details ? ` Details: ${details}` : ''}`;
-    document.querySelector<HTMLElement>('#summary-services')!.textContent = `Needs: ${services.join(', ')}`;
-    document.querySelector<HTMLElement>('#summary-details')!.textContent = details ? `Details: ${details}` : '';
-    if (calendarArea.hidden) reveal(calendarArea);
-    calendarArea.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
-
+    const notes = `Needs: ${build.join(', ')}.${tl ? ` Timeline: ${tl}.` : ''}${details ? ` Details: ${details}` : ''}`;
+    document.querySelector<HTMLElement>('#summary-text')!.textContent = notes;
+    reveal(calArea);
+    calArea.scrollIntoView({ behavior: reducedMotion() ? 'instant' : 'smooth', block: 'start' });
     if (window.Cal) return;
     (function (C: Window, A: string, L: string) {
       const queue = (api: any, args: IArguments) => api.q.push(args);
       C.Cal = C.Cal || function () {
-        const cal = C.Cal;
-        const args = arguments;
-        if (!cal.loaded) {
-          cal.ns = {};
-          cal.q = cal.q || [];
-          const script = document.createElement('script');
-          script.src = A;
-          document.head.appendChild(script);
-          cal.loaded = true;
-        }
-        if (args[0] === L) {
-          const api = function () { queue(api, arguments); };
-          const namespace = args[1];
-          api.q = api.q || [];
-          if (typeof namespace === 'string') {
-            cal.ns[namespace] = cal.ns[namespace] || api;
-            queue(cal, ['initNamespace', namespace] as any);
-          } else queue(cal, args);
-          return;
-        }
+        const cal = C.Cal; const args = arguments;
+        if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; const s = document.createElement('script'); s.src = A; document.head.appendChild(s); cal.loaded = true; }
+        if (args[0] === L) { const api = function () { queue(api, arguments); }; const ns = args[1]; api.q = api.q || []; if (typeof ns === 'string') { cal.ns[ns] = cal.ns[ns] || api; queue(cal, ['initNamespace', ns] as any); } else queue(cal, args); return; }
         queue(cal, args);
       };
     })(window, 'https://app.cal.com/embed/embed.js', 'init');
     const cal = window.Cal;
     cal('init', '20min', { origin: 'https://app.cal.com' });
-    cal.ns['20min']('inline', {
-      elementOrSelector: '#cal-embed',
-      calLink: 'ahmad-farooq-tuwcnw/20min',
-      config: { layout: 'month_view', theme: 'light', notes, metadata: { services: services.join(', ') } }
-    });
+    cal.ns['20min']('inline', { elementOrSelector: '#cal-embed', calLink: 'ahmad-farooq-tuwcnw/20min', config: { layout: 'month_view', theme: 'light', notes, metadata: { services: build.join(', ') } } });
     cal.ns['20min']('ui', { theme: 'light', styles: { branding: { brandColor: '#1d1d1f' } }, layout: 'month_view' });
   });
 </script>
@@ -131,6 +115,7 @@ const services = [
   .sub { margin: 0 0 3rem; color: #6e6e73; font-size: 1.125rem; line-height: 1.6; }
   .booking-step { margin: 2.5rem 0; }
   h2, label { display: block; margin: 0 0 1.25rem; color: #1d1d1f; font-size: 1.125rem; font-weight: 600; }
+  .optional { color: #86868b; font-weight: 500; font-size: .9rem; }
   .chips { display: flex; flex-wrap: wrap; gap: .75rem; }
   .chip { min-height: 44px; padding: .625rem 1.25rem; border: 1px solid #e8e8ed; border-radius: 999px; background: #fbfbfd; color: #1d1d1f; font: inherit; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s; }
   .chip:hover { border-color: #86868b; }
@@ -139,7 +124,6 @@ const services = [
   textarea:focus-visible { outline: 2px solid #1d1d1f; outline-offset: 2px; }
   .calendar-area { margin-top: 3rem; }
   .summary { padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; border: 1px solid #e8e8ed; border-radius: 16px; background: #fff; color: #6e6e73; line-height: 1.6; }
-  .summary p { margin: .25rem 0; }
   .summary .summary-label { margin-bottom: .5rem; color: #1d1d1f; font-weight: 600; }
   .cal-shell { min-height: 720px; overflow: hidden; border: 1px solid #e8e8ed; border-radius: 16px; background: white; }
   #cal-embed { width: 100%; min-height: 720px; }
