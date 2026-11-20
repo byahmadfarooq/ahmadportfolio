@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/BookButton.astro';
 const groups = [
   { label: 'Build', tools: ['Python', 'JavaScript', 'TypeScript', 'Node'] },
   { label: 'Frontend', tools: ['Astro', 'Next.js', 'React', 'Tailwind', 'Three.js', 'GSAP'] },
@@ -30,7 +31,7 @@ const groups = [
         <div class="pills" data-reveal="group">{group.tools.map((item) => <span>{item}</span>)}</div>
       </div>)}
     </section>
-    <a class="primary-button about-cta" href="/contact">Book 20 minutes with me</a>
+    <BookButton href="/contact" label="Book 20 minutes with me" class="about-cta" />
   </article>
 </BaseLayout>
 

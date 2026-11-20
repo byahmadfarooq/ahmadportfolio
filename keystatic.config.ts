@@ -1,7 +1,9 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
-  storage: { kind: 'local' },
+  storage: import.meta.env.DEV
+    ? { kind: 'local' }
+    : { kind: 'github', repo: 'byahmadfarooq/ahmadportfolio' },
   collections: {
     projects: collection({
       label: 'Projects',

@@ -5,6 +5,7 @@ import SoftFocusHeading from '../components/SoftFocusHeading.astro';
 import RotatingText from '../components/RotatingText.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ServiceRow from '../components/ServiceRow.astro';
+import BookButton from '../components/BookButton.astro';
 import SystemGraph from '../components/SystemGraph.astro';
 import { projects } from '../data/projects';
 ---
@@ -16,7 +17,7 @@ import { projects } from '../data/projects';
       <SoftFocusHeading text="Websites that look right. Systems that do the work." class="display hero-title" />
       <p class="hero-sub">The site brings people in. The system behind it books the calls, follows up on every lead, and keeps working after you log off. Most of your competitors only built the first half.</p>
       <div class="hero-action">
-        <a class="primary-button" href="/contact">Book 20 minutes with me</a>
+        <BookButton href="/contact" label="Book 20 minutes with me" />
         <a class="text-link" href="/work">See my work</a>
       </div>
       <div class="rotating-strip"><RotatingText /></div>
