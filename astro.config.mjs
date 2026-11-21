@@ -8,6 +8,7 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   site: 'https://ahmadfarooq.vercel.app',
   output: 'server',
+  build: { inlineStylesheets: 'always' },
   adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],

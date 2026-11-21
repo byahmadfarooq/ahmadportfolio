@@ -1,16 +1,26 @@
 # Ahmad Farooq
-> Developer based in Lahore. Builds websites, internal tools, and AI workflows.
 
-## About
-Ahmad Farooq is a developer who builds websites and the systems that run them: internal tools, automations, and AI workflows. He runs Zotir Labs and co-founded Kaivex Systems.
+> Systems engineer based in Lahore, Pakistan. Builds websites, internal tools and AI workflows. Runs Zotir Labs and co-founded Kaivex Systems.
+
+Ahmad Farooq builds websites and the systems behind them: internal tools, automations and AI workflows. He is the founder of Zotir Labs, a web agency, and co-founder of Kaivex Systems, an e-commerce growth agency.
+
+## Pages
+
+- [Home](https://ahmadfarooq.vercel.app/): What Ahmad builds and how to book a call
+- [Work](https://ahmadfarooq.vercel.app/work): Selected projects and case studies
+- [About](https://ahmadfarooq.vercel.app/about): Background, skills and tools
+- [Lab Notes](https://ahmadfarooq.vercel.app/lab-notes): Short write-ups on what he is building and learning
+- [Contact](https://ahmadfarooq.vercel.app/contact): Book a 20-minute call
 
 ## Work
-- Kai: 10-agent AI platform for outreach, habits, CRM, and chat
-- Blackbox: Landing page conversion scanner
-- Zotir Labs: Full brand and website for a web agency
-- Kaivex Systems: Digital infrastructure for e-commerce agencies
 
-## Contact
-- Email: ahmad@zotirlabs.com
-- LinkedIn: linkedin.com/in/byahmadd
-- GitHub: github.com/byahmadfarooq
+- [Zotir Labs](https://ahmadfarooq.vercel.app/work/zotir-labs): Brand, design system and website for a web agency
+- [Kaivex Systems](https://ahmadfarooq.vercel.app/work/kaivex): E-commerce growth agency website rebuilt as a multi-page store-first site
+- [Kai](https://ahmadfarooq.vercel.app/work/kai): 10-agent AI platform for outreach, habits, CRM and chat
+- [Blackbox](https://ahmadfarooq.vercel.app/work/blackbox): Landing page conversion scanner
+
+## Optional
+
+- [LinkedIn](https://www.linkedin.com/in/byahmadd/): Professional profile
+- [GitHub](https://github.com/byahmadfarooq): Code
+- [Email](mailto:ahmad@zotirlabs.com): ahmad@zotirlabs.com
