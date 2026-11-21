@@ -7,8 +7,11 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://ahmadfarooq.vercel.app',
-  output: 'static',
+  output: 'server',
   adapter: vercel(),
-  vite: { plugins: [tailwindcss()] },
+  vite: {
+    plugins: [tailwindcss()],
+    optimizeDeps: { exclude: ['@keystatic/astro'] },
+  },
   integrations: [sitemap(), react(), keystatic()],
 });
