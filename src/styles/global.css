@@ -57,8 +57,8 @@ body > main, body > footer { position: relative; z-index: 1; }
 .preloader.done { opacity: 0; pointer-events: none; }
 .pl-inner { text-align: center; }
 .pl-name { display: flex; justify-content: center; gap: .3em; font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-weight: 800; letter-spacing: -.04em; font-size: clamp(2rem, 6vw, 3.5rem); color: #1d1d1f; }
-.pl-word { opacity: 0; filter: blur(10px); transform: translateY(12px); transition: opacity .6s ease, filter .6s ease, transform .6s ease; }
-.preloader.in .pl-word { opacity: 1; filter: blur(0); transform: none; }
+.pl-word { opacity: 0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease; }
+.preloader.in .pl-word { opacity: 1; transform: none; }
 .preloader.in .pl-word:nth-child(2) { transition-delay: .12s; }
 .pl-count { margin-top: 1.1rem; font-family: 'Manrope', system-ui, sans-serif; font-weight: 500; font-size: .9rem; letter-spacing: .12em; color: #66666b; }
 @media (prefers-reduced-motion: reduce) { .preloader { display: none !important; } }

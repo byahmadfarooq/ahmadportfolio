@@ -10,5 +10,5 @@ const { text, tag: Tag = 'h1', class: className = '' } = Astro.props;
 <style>
   [data-soft-focus] { display: flex; flex-wrap: wrap; column-gap: .22em; }
   .word { display: inline-block; animation: soft-focus .6s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(var(--i) * 60ms); }
-  @keyframes soft-focus { from { opacity: 0; filter: blur(10px); transform: translateY(8px); } to { opacity: 1; filter: blur(0); transform: none; } }
+  @keyframes soft-focus { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 </style>
