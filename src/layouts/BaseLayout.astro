@@ -22,6 +22,7 @@ const schema = home ? {
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script is:inline>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('js');</script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -62,31 +63,19 @@ const schema = home ? {
     <Nav />
     <main id="content"><slot /></main>
     <Footer />
+    <script is:inline>
+      (function () {
+        var els = document.querySelectorAll('[data-reveal]');
+        var grid = document.querySelector('.dot-grid');
+        if (!document.documentElement.classList.contains('js')) return;
+        els.forEach(function (el) { if (el.getAttribute('data-reveal') === 'group') Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--i', i); }); });
+        if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('in'); }); }
+        else {
+          var io = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -12% 0px', threshold: 0.01 });
+          els.forEach(function (el) { io.observe(el); });
+        }
+        if (grid) { var q = false; addEventListener('scroll', function () { if (q) return; q = true; requestAnimationFrame(function () { grid.style.transform = 'translate3d(0,' + (-(scrollY * 0.15) % 28) + 'px,0)'; q = false; }); }, { passive: true }); }
+      })();
+    </script>
   </body>
 </html>
-
-<script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const grid = document.querySelector<HTMLElement>('.dot-grid');
-  if (!reduced.matches) {
-    gsap.registerPlugin(ScrollTrigger);
-    document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => {
-      const group = element.getAttribute('data-reveal') === 'group' ? element.querySelectorAll(':scope > *') : [element];
-      gsap.fromTo(group, { opacity: 0, y: 20 }, {
-        opacity: 1, y: 0, duration: .6, stagger: .08, ease: 'power2.out',
-        scrollTrigger: { trigger: element, start: 'top 85%', once: true }
-      });
-    });
-    let queued = false;
-    addEventListener('scroll', () => {
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(() => {
-        if (grid) grid.style.transform = `translate3d(0, ${-(scrollY * .15) % 28}px, 0)`;
-        queued = false;
-      });
-    }, { passive: true });
-  }
-</script>

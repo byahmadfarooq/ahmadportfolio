@@ -38,6 +38,10 @@ body > main, body > footer { position: relative; z-index: 1; }
 .skip-link { position: fixed; top: .75rem; left: .75rem; z-index: 100; transform: translateY(-160%); background: #1d1d1f; color: #fbfbfd; padding: .75rem 1rem; border-radius: 12px; }
 .skip-link:focus { transform: translateY(0); }
 
+.js [data-reveal]:not([data-reveal="group"]), .js [data-reveal="group"] > * { transition: opacity .6s ease, transform .6s ease; }
+.js [data-reveal="group"] > * { transition-delay: calc(var(--i, 0) * 80ms); }
+.js [data-reveal]:not([data-reveal="group"]):not(.in), .js [data-reveal="group"]:not(.in) > * { opacity: 0; transform: translateY(20px); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .dot-grid { transform: none !important; }

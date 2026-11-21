@@ -4,24 +4,11 @@ const { text, tag: Tag = 'h1', class: className = '' } = Astro.props;
 ---
 
 <Tag class={className} data-soft-focus aria-label={text}>
-  {text.split(' ').map((word) => <span class="word" aria-hidden="true">{word}</span>)}
+  {text.split(' ').map((word, i) => <span class="word" style={`--i:${i}`} aria-hidden="true">{word}</span>)}
 </Tag>
 
 <style>
   [data-soft-focus] { display: flex; flex-wrap: wrap; column-gap: .22em; }
-  .word { display: inline-block; }
+  .word { display: inline-block; animation: soft-focus .6s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(var(--i) * 60ms); }
+  @keyframes soft-focus { from { opacity: 0; filter: blur(10px); transform: translateY(8px); } to { opacity: 1; filter: blur(0); transform: none; } }
 </style>
-
-<script>
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    import('gsap').then(({ gsap }) => {
-      document.querySelectorAll<HTMLElement>('[data-soft-focus]').forEach((heading) => {
-        const words = heading.querySelectorAll('.word');
-        gsap.timeline().fromTo(words,
-          { opacity: 0, filter: 'blur(10px)', y: 8 },
-          { opacity: 1, filter: 'blur(0px)', y: 0, stagger: .06, duration: .6, ease: 'power2.out' }
-        );
-      });
-    }).catch(() => { /* The unanimated heading stays visible. */ });
-  }
-</script>
