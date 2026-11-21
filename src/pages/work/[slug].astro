@@ -15,8 +15,17 @@ const { Content, frontmatter } = mod;
     <header>
       <p class="eyebrow">{frontmatter.tag}</p>
       <h1 class="display">{frontmatter.title}</h1>
-      <div class="meta"><span>Role: Design and development</span><span>Stack: {frontmatter.stack}</span></div>
+      <div class="meta">
+        <span>Role: Design and development</span>
+        <span>Stack: {frontmatter.stack}</span>
+        {frontmatter.url && <a href={frontmatter.url} target="_blank" rel="noopener">Visit the live site</a>}
+      </div>
     </header>
+    {frontmatter.hero && (
+      <figure class="hero-shot">
+        <img src={frontmatter.hero} alt={frontmatter.heroAlt || frontmatter.title} loading="eager" />
+      </figure>
+    )}
     <div class="case-section"><h2>The problem</h2><p>{frontmatter.problem}</p></div>
     <div class="case-section"><h2>What I built</h2><p>{frontmatter.built}</p></div>
     <div class="case-section"><h2>The result</h2><p>{frontmatter.result}</p></div>
@@ -27,15 +36,27 @@ const { Content, frontmatter } = mod;
 
 <style>
   .case-study { max-width: 960px; }
-  header { margin: 4rem 0 6rem; }
+  header { margin: 4rem 0 3rem; }
   header .eyebrow { margin-bottom: .8rem; }
   h1 { margin: 0 0 2rem; font-size: clamp(4rem, 11vw, 8.5rem); }
-  .meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; color: #86868b; font-size: .875rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: 1rem 2rem; color: #86868b; font-size: .875rem; align-items: center; }
+  .meta a { color: #1d1d1f; text-decoration: underline; text-underline-offset: 3px; }
+  .hero-shot { margin: 0 0 5rem; }
+  .hero-shot img { width: 100%; height: auto; display: block; border-radius: 24px; border: 1px solid #e8e8ed; box-shadow: 0 2px 4px rgba(0,0,0,.04), 0 20px 50px rgba(0,0,0,.08); }
   .case-section { display: grid; grid-template-columns: .7fr 1.3fr; gap: 3rem; padding: 3rem 0; border-top: 1px solid #e8e8ed; }
   .case-section h2 { margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.6rem; }
   .case-section p { margin: 0; color: #6e6e73; line-height: 1.75; }
-  .prose { max-width: 44rem; margin: 4rem 0 0 auto; }
+  .prose { max-width: 100%; margin: 4.5rem 0 0; }
+  .prose :global(h2) { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(1.6rem, 3.2vw, 2.1rem); line-height: 1.15; margin: 4rem 0 1.1rem; max-width: 40rem; }
+  .prose :global(p) { max-width: 40rem; color: #3a3a3c; line-height: 1.8; margin: 0 0 1.25rem; font-size: 1.05rem; }
   .prose :global(a) { color: #1d1d1f; text-decoration: underline; }
+  .prose :global(figure) { margin: 2.5rem 0 3.25rem; }
+  .prose :global(figure img) { width: 100%; height: auto; display: block; border-radius: 22px; border: 1px solid #e8e8ed; box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px rgba(0,0,0,.06); }
+  .prose :global(figcaption) { margin-top: .85rem; font-size: .82rem; color: #86868b; max-width: 40rem; }
+  .prose :global(figure.scroll .frame) { max-height: 600px; overflow-y: auto; border-radius: 22px; border: 1px solid #e8e8ed; box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 12px 32px rgba(0,0,0,.06); }
+  .prose :global(figure.scroll .frame img) { border: 0; border-radius: 0; box-shadow: none; }
+  .prose :global(figure.phone) { text-align: center; }
+  .prose :global(figure.phone img) { max-width: 300px; margin: 0 auto; border-radius: 30px; }
   .case-cta { margin-top: 6rem; padding: 3rem 0; border-top: 1px solid #e8e8ed; }
   .case-cta p { margin: 0 0 .7rem; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2rem; font-weight: 700; }
   @media (max-width: 680px) { .case-section { grid-template-columns: 1fr; gap: 1rem; } }
