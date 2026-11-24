@@ -4,7 +4,7 @@ tag: Conversion scanner
 description: A free scanner that scores a B2B landing page from 29 fixed checks and ranks the fixes by points gained. No AI in the score.
 problem: Teams know a landing page underperforms but not why. Audits are opinions, and AI scorers give a different answer each run, so nobody trusts the number.
 built: A Next.js scanner with a fixed rubric of 29 checks in five areas. Every check shows its evidence, every fix shows its points, and the same page always gets the same score. Reports come with a share link, a share card, a badge and a PDF.
-result: Live and free to use. I scanned my own site first: it scored 70, I found two bugs in the scanner, fixed them, and it scored 85. Usage numbers will go here once they are real.
+result: Live and free to use. I scanned my own site first. It scored 70, I found two bugs in the scanner, fixed them, and it scored 85. Usage numbers will go here once they are real.
 stack: Next.js, TypeScript, Tailwind, pdf-lib
 url: https://blackboxcheck.vercel.app
 hero: /work/blackbox/report-top.webp
